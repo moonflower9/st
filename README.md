@@ -24,6 +24,11 @@ tic -sx st.info
 
 See the man page for additional details.
 
+## Configuration
+
+The configuration of dwm is done by creating a custom `config.h`
+and (re)compiling the source code.
+
 ## Credits
 
 Based on Aurélien APTEL (`aurelien.aptel@gmail.com`) bt source code.
