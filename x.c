@@ -237,6 +237,8 @@ void chgalpha(const Arg *arg) {
   if (alpha > 1.0f)
     alpha = 1.0f;
   dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
+  dc.col[defaultbg].pixel &= 0x00FFFFFF;
+  dc.col[defaultbg].pixel |= (unsigned char)(0xff * alpha) << 24;
   /* Required to remove artifacting from borderpx */
   cresize(0, 0);
   redraw();
