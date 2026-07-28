@@ -145,7 +145,7 @@ typedef struct {
 static inline ushort sixd_to_16bit(int);
 static int xmakeglyphfontspecs(XftGlyphFontSpec *, const Glyph *, int, int,
                                int);
-void chgalpha(const Arg *arg) + {
+void chgalpha(const Arg *arg) {
   if (arg->f == -1.0f && alpha >= 0.1f)
     alpha -= 0.1f;
   else if (arg->f == 1.0f && alpha < 1.0f)
@@ -156,7 +156,7 @@ void chgalpha(const Arg *arg) + {
     return;
   /* Clamp alpha so it never exceeds valid range */
   if (alpha < 0.1f)
-    +alpha = 0.1f;
+    alpha = 0.1f;
   if (alpha > 1.0f)
     alpha = 1.0f;
   dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
