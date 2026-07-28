@@ -145,22 +145,23 @@ typedef struct {
 static inline ushort sixd_to_16bit(int);
 static int xmakeglyphfontspecs(XftGlyphFontSpec *, const Glyph *, int, int,
                                int);
-void + chgalpha(const Arg *arg) + {
+void chgalpha(const Arg *arg) + {
   if (arg->f == -1.0f && alpha >= 0.1f)
-    +alpha -= 0.1f;
+    alpha -= 0.1f;
   else if (arg->f == 1.0f && alpha < 1.0f)
-    +alpha += 0.1f;
+    alpha += 0.1f;
   else if (arg->f == 0.0f)
-    +alpha = alpha_def;
+    alpha = alpha_def;
   else
     return;
   /* Clamp alpha so it never exceeds valid range */
-  +if (alpha < 0.1f) + alpha = 0.1f;
+  if (alpha < 0.1f)
+    +alpha = 0.1f;
   if (alpha > 1.0f)
-    +alpha = 1.0f;
-  +dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
+    alpha = 1.0f;
+  dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
   /* Required to remove artifacting from borderpx */
-  +cresize(0, 0);
+  cresize(0, 0);
   redraw();
 }
 static void xdrawglyphfontspecs(const XftGlyphFontSpec *, Glyph, int, int, int);
@@ -1099,21 +1100,16 @@ void xinit(int cols, int rows) {
                         ButtonPressMask | ButtonReleaseMask;
   xw.attrs.colormap = xw.cmap;
 
-  root = XRootWindow(xw.dpy, xw.scr);
-
-  xw.win = XCreateWindow(
-      xw.dpy, root, xw.l, xw.t, win.w, win.h, 0, xw.depth, InputOutput, xw.vis,
-      CWBackPixel | CWBorderPixel | CWBitGravity | CWEventMask | CWColormap,
-      &xw.attrs);
-  if (parent != root)
-    XReparentWindow(xw.dpy, xw.win, parent, xw.l, xw.t);
+  xw.win = XCreateWindow(xw.dpy, parent, xw.l, xw.t, win.w, win.h, 0, xw.depth,
+                         InputOutput, xw.vis,
+                         CWBackPixel | CWBorderPixel | CWBitGravity |
+                             CWEventMask | CWColormap,
+                         &xw.attrs);
 
   memset(&gcvalues, 0, sizeof(gcvalues));
   gcvalues.graphics_exposures = False;
   xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h, xw.depth);
   dc.gc = XCreateGC(xw.dpy, xw.buf, GCGraphicsExposures, &gcvalues);
-  XSetForeground(xw.dpy, dc.gc, dc.col[defaultbg].pixel);
-  XFillRectangle(xw.dpy, xw.buf, dc.gc, 0, 0, win.w, win.h);
   XSetForeground(xw.dpy, dc.gc, dc.col[defaultbg].pixel);
   XFillRectangle(xw.dpy, xw.buf, dc.gc, 0, 0, win.w, win.h);
 
