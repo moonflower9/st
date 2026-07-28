@@ -145,25 +145,6 @@ typedef struct {
 static inline ushort sixd_to_16bit(int);
 static int xmakeglyphfontspecs(XftGlyphFontSpec *, const Glyph *, int, int,
                                int);
-void chgalpha(const Arg *arg) {
-  if (arg->f == -1.0f && alpha >= 0.1f)
-    alpha -= 0.1f;
-  else if (arg->f == 1.0f && alpha < 1.0f)
-    alpha += 0.1f;
-  else if (arg->f == 0.0f)
-    alpha = alpha_def;
-  else
-    return;
-  /* Clamp alpha so it never exceeds valid range */
-  if (alpha < 0.1f)
-    alpha = 0.1f;
-  if (alpha > 1.0f)
-    alpha = 1.0f;
-  dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
-  /* Required to remove artifacting from borderpx */
-  cresize(0, 0);
-  redraw();
-}
 static void xdrawglyphfontspecs(const XftGlyphFontSpec *, Glyph, int, int, int);
 static void xdrawglyph(Glyph, int, int);
 static void xclear(int, int, int, int);
@@ -240,6 +221,27 @@ static void (*handler[LASTEvent])(XEvent *) = {
 /* Globals */
 static DC dc;
 static XWindow xw;
+
+void chgalpha(const Arg *arg) {
+  if (arg->f == -1.0f && alpha >= 0.1f)
+    alpha -= 0.1f;
+  else if (arg->f == 1.0f && alpha < 1.0f)
+    alpha += 0.1f;
+  else if (arg->f == 0.0f)
+    alpha = alpha_def;
+  else
+    return;
+  /* Clamp alpha so it never exceeds valid range */
+  if (alpha < 0.1f)
+    alpha = 0.1f;
+  if (alpha > 1.0f)
+    alpha = 1.0f;
+  dc.col[defaultbg].color.alpha = (unsigned short)(0xFFFF * alpha);
+  /* Required to remove artifacting from borderpx */
+  cresize(0, 0);
+  redraw();
+}
+
 static XSelection xsel;
 static TermWindow win;
 
