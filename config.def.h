@@ -1,5 +1,11 @@
 /* See LICENSE file for copyright and license details. */
 
+/* moon st build
+applied patches:
+https://st.suckless.org/patches/changealpha/st-alpha-changealpha-20251027-0.9.3.diff
+https://st.suckless.org/patches/scrollback/st-scrollback-ringbuffer-0.9.2.diff
+*/
+
 /*
  * appearance
  *
